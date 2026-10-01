@@ -1,0 +1,1 @@
+create unique index if not exists commute_routes_one_active_per_user on public.commute_routes(user_id) where status='ACTIVE';
