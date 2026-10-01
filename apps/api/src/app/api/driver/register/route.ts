@@ -3,7 +3,7 @@ import { z } from "zod";
 import { requireUser, serverDb } from "../../../../lib/auth";
 
 const schema = z.object({
-  birthDate: z.string().regex(/^\\d{4}-\\d{2}-\\d{2}$/),
+  birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   licenseNumber: z.string().trim().min(4).max(40),
   vehicle: z.object({
     brand: z.string().trim().min(2).max(40),
