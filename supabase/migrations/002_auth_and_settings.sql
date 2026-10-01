@@ -1,0 +1,1 @@
+alter table profiles add column if not exists google_sub text unique; insert into platform_settings(key,value) values ('platform_commission_percent','10'),('search_radius_km','5'),('offer_expiration_seconds','120'),('free_waiting_minutes','5'),('minimum_fare','10000'),('maximum_fare','5000000') on conflict(key) do nothing;
