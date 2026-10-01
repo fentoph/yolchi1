@@ -3,8 +3,8 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
-  title: "Yo‘lchi",
-  description: "Yo‘lchi — hozir taxi kerakmi? Yo'lchi bor!",
+  title: "YO‘LDAMAN",
+  description: "YO‘LDAMAN — yo‘lovchi va haydovchini birlashtiradigan zamonaviy safar platformasi.",
 };
 
 export default function RootLayout({
