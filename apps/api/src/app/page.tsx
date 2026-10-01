@@ -139,6 +139,34 @@ export default function Landing() {
         </div>
       </section>
 
+      <section id="support" className="support">
+        <div className="support-head" data-motion>
+          <div className="eyebrow">YORDAM VA ALOQA</div>
+          <h2>Savolingiz bormi?</h2>
+          <p>
+            Ilova, safar yoki haydovchilik bo‘yicha savollaringiz bo‘lsa,
+            biz bilan qulay usulda bog‘laning.
+          </p>
+        </div>
+        <div className="support-grid">
+          <a className="support-card" href="mailto:aslbekqoziboyev536@gmail.com" data-motion>
+            <span className="support-label">EMAIL</span>
+            <strong>aslbekqoziboyev536@gmail.com</strong>
+            <span className="support-action">Xat yuborish ↗</span>
+          </a>
+          <a className="support-card" href="https://t.me/fentophceo" target="_blank" rel="noreferrer" data-motion>
+            <span className="support-label">TELEGRAM</span>
+            <strong>@fentophceo</strong>
+            <span className="support-action">Telegramda yozish ↗</span>
+          </a>
+          <a className="support-card" href="tel:+998878118917" data-motion>
+            <span className="support-label">TELEFON</span>
+            <strong>+998 87 811 89 17</strong>
+            <span className="support-action">Qo‘ng‘iroq qilish ↗</span>
+          </a>
+        </div>
+      </section>
+
       <section className="closing">
         <div data-motion className="reveal-scale">
           <p className="eyebrow">YO‘LDAMAN</p>
@@ -245,6 +273,16 @@ export default function Landing() {
         .driver-join > div { max-width:900px; }
         .driver-join h2 { margin:20px 0 0; font-size:clamp(55px,9vw,125px); line-height:.9; letter-spacing:-.07em; }
         .driver-join p { max-width:650px; margin:30px auto 0; font-size:19px; line-height:1.65; opacity:.6; }
+        .support { min-height:78vh; padding:clamp(60px,8vw,110px) clamp(28px,6vw,96px); background:#e9e9e3; display:flex; flex-direction:column; justify-content:center; }
+        .support-head { max-width:900px; }
+        .support-head h2 { margin:20px 0 0; font-size:clamp(55px,9vw,125px); line-height:.88; letter-spacing:-.07em; font-weight:900; }
+        .support-head p { max-width:620px; margin:28px 0 0; font-size:18px; line-height:1.65; opacity:.58; }
+        .support-grid { width:100%; max-width:1100px; display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:55px auto 0; }
+        .support-card { min-height:220px; padding:26px; border:1px solid rgba(16,16,16,.12); border-radius:24px; color:#101010; text-decoration:none; background:#f4f4f0; display:flex; flex-direction:column; align-items:flex-start; transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease; }
+        .support-card:hover { transform:translateY(-7px); border-color:rgba(16,16,16,.3); box-shadow:0 20px 50px rgba(0,0,0,.08); }
+        .support-label { font-size:10px; font-weight:900; letter-spacing:.2em; opacity:.45; }
+        .support-card strong { margin-top:34px; font-size:clamp(20px,2vw,27px); line-height:1.15; letter-spacing:-.035em; overflow-wrap:anywhere; }
+        .support-action { margin-top:auto; padding-top:25px; font-size:12px; font-weight:850; opacity:.6; }
         .closing { min-height:80vh; align-items:center; text-align:center; }
         .closing h2 { margin:18px 0 0; font-size:clamp(65px,12vw,170px); line-height:.82; letter-spacing:-.075em; }
         footer {
@@ -263,6 +301,9 @@ export default function Landing() {
           .download-grid { grid-template-columns:1fr; margin-top:45px; }
           .download-card { min-height:330px; }
           .feature p { margin-left:0; }
+          .support { min-height:auto; padding:70px 28px; }
+          .support-grid { grid-template-columns:1fr; margin-top:38px; }
+          .support-card { min-height:190px; }
         }
         @media (prefers-reduced-motion:reduce) {
           .hero-content,.reveal-scale,[data-motion],.download-card { transition:none !important; transform:none !important; opacity:1 !important; }
