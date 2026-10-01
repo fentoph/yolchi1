@@ -10,6 +10,21 @@ export default function Landing() {
   const pageRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    const url = new URL(window.location.href);
+    const utmKeys = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+    let changed = false;
+
+    for (const key of utmKeys) {
+      if (url.searchParams.has(key)) {
+        url.searchParams.delete(key);
+        changed = true;
+      }
+    }
+
+    if (changed) {
+      window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+    }
+
     const createdAt = new Date(PROJECT_CREATED_AT).getTime();
     setProjectAgeDays(Math.max(0, Math.floor((Date.now() - createdAt) / 86400000)));
 
