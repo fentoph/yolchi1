@@ -2,14 +2,20 @@
 
 import { useEffect, useRef, useState } from "react";
 
+const PROJECT_CREATED_AT = "2026-10-01T06:30:37+05:00";
+
 export default function Landing() {
   const [visits, setVisits] = useState<number | null>(null);
+  const [projectAgeDays, setProjectAgeDays] = useState(0);
   const pageRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    const createdAt = new Date(PROJECT_CREATED_AT).getTime();
+    setProjectAgeDays(Math.max(0, Math.floor((Date.now() - createdAt) / 86400000)));
+
     fetch("/api/visits", { cache: "no-store" })
       .then((r) => r.json())
-      .then((data) => setVisits(typeof data.visits === "number" ? data.visits : 0))
+      .then((data) => setVisits(typeof data.visits === "number" ? data.visits : Number(data.visits) || 0))
       .catch(() => setVisits(0));
 
     const root = pageRef.current;
@@ -176,7 +182,10 @@ export default function Landing() {
 
       <footer>
         <strong>YO‘LDAMAN</strong>
-        <span>© {new Date().getFullYear()} Yo‘ldaman</span>
+        <div className="footer-meta">
+          <span>Loyiha yaratilganiga {projectAgeDays} kun</span>
+          <span>© {new Date().getFullYear()} Yo‘ldaman</span>
+        </div>
       </footer>
 
       <style jsx>{`
@@ -286,9 +295,12 @@ export default function Landing() {
         .closing { min-height:80vh; align-items:center; text-align:center; }
         .closing h2 { margin:18px 0 0; font-size:clamp(65px,12vw,170px); line-height:.82; letter-spacing:-.075em; }
         footer {
-          display:flex; justify-content:space-between; padding:25px clamp(28px,6vw,96px);
-          font-size:10px; letter-spacing:.1em; opacity:.5;
+          display:flex; justify-content:space-between; align-items:center; gap:24px;
+          padding:25px clamp(28px,6vw,96px); font-size:10px; letter-spacing:.1em; opacity:.5;
         }
+        .footer-meta { display:flex; align-items:center; gap:20px; }
+        .footer-meta span:first-child { opacity:.75; }
+
         @keyframes float {
           from { transform:translate3d(-15px,-10px,0) scale(1); }
           to { transform:translate3d(20px,20px,0) scale(1.12); }
@@ -304,6 +316,8 @@ export default function Landing() {
           .support { min-height:auto; padding:70px 28px; }
           .support-grid { grid-template-columns:1fr; margin-top:38px; }
           .support-card { min-height:190px; }
+          footer { align-items:flex-start; }
+          .footer-meta { flex-direction:column; align-items:flex-end; gap:6px; text-align:right; }
         }
         @media (prefers-reduced-motion:reduce) {
           .hero-content,.reveal-scale,[data-motion],.download-card { transition:none !important; transform:none !important; opacity:1 !important; }
