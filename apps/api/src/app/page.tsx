@@ -34,6 +34,7 @@ export default function Landing() {
       <section className="hero">
         <div className="hero-glow glow-one" />
         <div className="hero-glow glow-two" />
+
         <div className="hero-content" data-motion>
           <div className="eyebrow">SHAHAR ICHIDA HARAKATLANISHNING YANGI USULI</div>
           <h1>YO‘LCHI</h1>
@@ -41,9 +42,20 @@ export default function Landing() {
           <p className="hero-copy">
             Yo‘lingiz bor. Bo‘sh joyingiz bor. Yo‘lchi orqali bir-biringizni toping.
           </p>
-          <a className="primary-button" href="yolchi://">Hoziroq sinab ko‘rish <span>↗</span></a>
+
+          <a className="primary-button" href="yolchi://">
+            Hoziroq sinab ko‘rish <span>↗</span>
+          </a>
         </div>
-        <div className="scroll-hint">PASTGA AYLANITIRING <span>↓</span></div>
+
+        <div className="hero-visits" aria-label="Sahifaga tashriflar soni">
+          <span>{visits === null ? "—" : visits.toLocaleString("uz-UZ")}</span>
+          <small>SAHIFAGA TASHRIF</small>
+        </div>
+
+        <div className="scroll-hint">
+          PASTGA AYLANITIRING <span>↓</span>
+        </div>
       </section>
 
       <section className="statement">
@@ -57,7 +69,9 @@ export default function Landing() {
 
       <section className="feature">
         <div data-motion className="feature-number">01</div>
-        <h2 data-motion className="reveal-scale">Bo‘sh joyingizni yo‘lga aylantiring.</h2>
+        <h2 data-motion className="reveal-scale">
+          Bo‘sh joyingizni yo‘lga aylantiring.
+        </h2>
         <p data-motion>
           Qayerdan chiqayotganingizni, qayerga borayotganingizni va nechta joy
           borligini belgilang. Qolganini Yo‘lchi ko‘rsatadi.
@@ -66,7 +80,9 @@ export default function Landing() {
 
       <section className="feature dark">
         <div data-motion className="feature-number">02</div>
-        <h2 data-motion className="reveal-scale">Bir yo‘l. Bir nechta imkoniyat.</h2>
+        <h2 data-motion className="reveal-scale">
+          Bir yo‘l. Bir nechta imkoniyat.
+        </h2>
         <p data-motion>
           Yaqiningizdagi faol yo‘nalishlarni xaritada ko‘ring va o‘zingizga
           mos keladigan yo‘lni toping.
@@ -77,11 +93,6 @@ export default function Landing() {
         <div data-motion className="reveal-scale">
           <p className="eyebrow">YO‘LCHI</p>
           <h2>Yo‘l bor.<br />Kelishamiz.</h2>
-          <a className="primary-button" href="yolchi://">Hoziroq sinab ko‘rish <span>↗</span></a>
-        </div>
-        <div className="visits" aria-label="Sahifaga tashriflar soni">
-          <span>{visits === null ? "—" : visits.toLocaleString("uz-UZ")}</span>
-          <small>SAHIFAGA TASHRIF</small>
         </div>
       </section>
 
@@ -99,6 +110,9 @@ export default function Landing() {
         .primary-button { display:inline-flex; align-items:center; gap:22px; margin-top:38px; padding:18px 25px; border-radius:999px; background:#101010; color:#fff; text-decoration:none; font-weight:800; font-size:16px; transition:transform .25s ease,box-shadow .25s ease; }
         .primary-button:hover { transform:translateY(-4px); box-shadow:0 18px 45px rgba(0,0,0,.18); }
         .primary-button span { font-size:20px; }
+        .hero-visits { position:absolute; right:clamp(28px,6vw,96px); top:clamp(28px,5vw,60px); z-index:3; text-align:right; }
+        .hero-visits span { display:block; font-size:clamp(24px,3vw,42px); font-weight:900; letter-spacing:-.05em; }
+        .hero-visits small { font-size:9px; letter-spacing:.16em; opacity:.5; }
         .scroll-hint { position:absolute; bottom:28px; font-size:10px; letter-spacing:.18em; opacity:.45; }
         .scroll-hint span { margin-left:8px; font-size:16px; }
         .hero-glow { position:absolute; width:42vw; height:42vw; border-radius:50%; filter:blur(80px); opacity:.25; animation:float 8s ease-in-out infinite alternate; }
@@ -117,15 +131,12 @@ export default function Landing() {
         .dark h2,.dark p { max-width:1000px; }
         .closing { min-height:90vh; align-items:center; text-align:center; }
         .closing h2 { margin:18px 0 0; font-size:clamp(65px,12vw,170px); line-height:.82; letter-spacing:-.075em; }
-        .visits { position:absolute; right:clamp(28px,6vw,96px); bottom:35px; text-align:right; }
-        .visits span { display:block; font-size:clamp(24px,3vw,42px); font-weight:900; letter-spacing:-.05em; }
-        .visits small { font-size:9px; letter-spacing:.16em; opacity:.5; }
         @keyframes float { from { transform:translate3d(-15px,-10px,0) scale(1); } to { transform:translate3d(20px,20px,0) scale(1.12); } }
         @media (max-width:700px) {
           .hero,.statement,.feature,.closing { min-height:92vh; padding:28px; }
           h1 { font-size:25vw; }
           .feature p { margin-left:0; }
-          .visits { right:28px; bottom:22px; }
+          .hero-visits { right:28px; top:22px; }
         }
         @media (prefers-reduced-motion:reduce) {
           .hero-content,.reveal-scale,[data-motion] { transition:none !important; transform:none !important; opacity:1 !important; }
