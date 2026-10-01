@@ -19,7 +19,7 @@ export default function Landing() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.dataset.visible = "true";
+          if (entry.isIntersecting) (entry.target as HTMLElement).dataset.visible = "true";
         });
       },
       { threshold: 0.2 }
