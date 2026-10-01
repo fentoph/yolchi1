@@ -1,1 +1,40 @@
-import {z} from "zod";export const coordinate=z.object({lat:z.number().min(-90).max(90),lng:z.number().min(-180).max(180)});export const createRideSchema=z.object({pickup:coordinate,destination:coordinate,proposedPrice:z.number().int().positive().max(100000000),passengerCount:z.number().int().min(1).max(8),comment:z.string().trim().max(500).optional(),luggage:z.boolean().optional(),vehicleCategory:z.enum(["STANDARD","COMFORT","XL"])});export const offerSchema=z.object({rideId:z.string().uuid(),price:z.number().int().positive().max(100000000)});export const commuteCreateSchema=z.object({origin:coordinate,destination:coordinate,originAddress:z.string().trim().max(200).optional(),destinationAddress:z.string().trim().max(200).optional(),seats:z.number().int().min(1).max(8),pricePerUnit:z.number().int().positive().max(10000000),priceUnit:z.enum(["KM","METER"]),vehicleType:z.enum(["STANDARD","COMFORT","XL"]).default("STANDARD")});export const commuteLocationSchema=coordinate.extend({heading:z.number().min(0).max(360).optional()});
+import { z } from "zod";
+
+export const coordinate = z.object({
+  lat: z.number().min(-90).max(90),
+  lng: z.number().min(-180).max(180),
+});
+
+const rideCoordinate = coordinate.extend({
+  address: z.string().trim().max(200).optional(),
+});
+
+export const createRideSchema = z.object({
+  pickup: rideCoordinate,
+  destination: rideCoordinate,
+  proposedPrice: z.number().int().positive().max(100000000),
+  passengerCount: z.number().int().min(1).max(8),
+  comment: z.string().trim().max(500).optional(),
+  luggage: z.boolean().optional(),
+  vehicleCategory: z.enum(["STANDARD", "COMFORT", "XL"]),
+});
+
+export const offerSchema = z.object({
+  rideId: z.string().uuid(),
+  price: z.number().int().positive().max(100000000),
+});
+
+export const commuteCreateSchema = z.object({
+  origin: coordinate,
+  destination: coordinate,
+  originAddress: z.string().trim().max(200).optional(),
+  destinationAddress: z.string().trim().max(200).optional(),
+  seats: z.number().int().min(1).max(8),
+  pricePerUnit: z.number().int().positive().max(10000000),
+  priceUnit: z.enum(["KM", "METER"]),
+  vehicleType: z.enum(["STANDARD", "COMFORT", "XL"]).default("STANDARD"),
+});
+
+export const commuteLocationSchema = coordinate.extend({
+  heading: z.number().min(0).max(360).optional(),
+});
