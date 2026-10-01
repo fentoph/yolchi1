@@ -1,0 +1,17 @@
+create extension if not exists pgcrypto;
+create table if not exists commute_routes (
+ id uuid primary key default gen_random_uuid(), user_id uuid not null references profiles(user_id) on delete cascade,
+ origin_lat double precision not null, origin_lng double precision not null, destination_lat double precision not null, destination_lng double precision not null,
+ origin_address text, destination_address text, seats_total smallint not null check (seats_total between 1 and 8), seats_available smallint not null check (seats_available between 0 and 8),
+ price_per_km integer not null check (price_per_km > 0), vehicle_type text not null default 'STANDARD' check (vehicle_type in ('STANDARD','COMFORT','XL')),
+ status text not null default 'ACTIVE' check (status in ('ACTIVE','PAUSED','COMPLETED','CANCELLED')),
+ current_lat double precision, current_lng double precision, current_heading double precision, last_location_at timestamptz,
+ created_at timestamptz not null default now(), updated_at timestamptz not null default now()
+);
+create index if not exists commute_routes_active_idx on commute_routes(status,updated_at desc);
+create index if not exists commute_routes_user_idx on commute_routes(user_id,status);
+alter table commute_routes enable row level security;
+drop policy if exists commute_routes_owner_all on commute_routes;
+create policy commute_routes_owner_all on commute_routes for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+drop policy if exists commute_routes_active_read on commute_routes;
+create policy commute_routes_active_read on commute_routes for select using (status='ACTIVE');
