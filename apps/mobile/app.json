@@ -1,1 +1,1 @@
-{"expo":{"name":"Yo‘lchi","slug":"yolchi","scheme":"yolchi","version":"1.0.0","orientation":"portrait","plugins":["expo-router","expo-secure-store","expo-location"],"android":{"package":"uz.yolchi.app"},"ios":{"bundleIdentifier":"uz.yolchi.app"}}}
+{"expo":{"name":"YO‘LDAMAN","slug":"yolchi","scheme":"yolchi","version":"1.0.0","orientation":"portrait","plugins":["expo-router","expo-secure-store","expo-location"],"android":{"package":"uz.yolchi.app"},"ios":{"bundleIdentifier":"uz.yolchi.app"}}}
