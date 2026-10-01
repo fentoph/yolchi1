@@ -1,0 +1,1 @@
+alter table commute_routes add column if not exists price_unit text not null default 'KM' check(price_unit in('KM','METER'));alter table commute_routes add column if not exists price_per_unit integer;update commute_routes set price_per_unit=price_per_km where price_per_unit is null;
