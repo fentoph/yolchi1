@@ -1,5 +1,5 @@
 -- Repair the landing-page visit counter.
--- Idempotent: safe to run whether 010_site_visit_counter.sql was applied or not.
+-- Safe for the fresh YO'LDAMAN Supabase project and idempotent.
 
 create table if not exists public.site_stats (
   key text primary key,
@@ -14,6 +14,7 @@ values ('landing', 0)
 on conflict (key) do nothing;
 
 revoke all on public.site_stats from anon, authenticated;
+grant select on public.site_stats to anon;
 grant all on public.site_stats to service_role;
 
 create or replace function public.increment_site_visits()
@@ -37,5 +38,5 @@ begin
 end;
 $$;
 
-revoke execute on function public.increment_site_visits() from public, anon, authenticated;
-grant execute on function public.increment_site_visits() to service_role;
+revoke execute on function public.increment_site_visits() from public, authenticated;
+grant execute on function public.increment_site_visits() to anon, service_role;
