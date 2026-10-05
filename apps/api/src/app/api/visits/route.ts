@@ -20,6 +20,16 @@ export async function GET(req: Request) {
 
     if (!hasVisitor) {
       const { data, error } = await db.rpc("increment_site_visits");
+
+      if (error) {
+        console.error("[visits] increment_site_visits failed", {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+        });
+      }
+
       const visits = toVisitCount(data);
 
       if (!error && visits !== null) {
@@ -46,13 +56,23 @@ export async function GET(req: Request) {
       .eq("key", "landing")
       .maybeSingle();
 
+    if (error) {
+      console.error("[visits] site_stats read failed", {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+      });
+    }
+
     const visits = error ? null : toVisitCount(data?.visits);
 
     return NextResponse.json(
       { visits: visits ?? 0 },
       { headers: { "cache-control": "no-store, max-age=0" } }
     );
-  } catch {
+  } catch (error) {
+    console.error("[visits] unexpected error", error);
     return NextResponse.json(
       { visits: 0 },
       { headers: { "cache-control": "no-store, max-age=0" } }
