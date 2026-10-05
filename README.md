@@ -1,9 +1,9 @@
-# Yo‘lchi
+# YO‘LDAMAN
 
-Yo‘lchi — O‘zbekiston uchun real-time transport platformasi. Passenger narx taklif qiladi, approved driverlar offer/counter-offer beradi, passenger driver tanlaydi.
+YO‘LDAMAN — yo‘lovchi va haydovchini birlashtiradigan safar platformasi.
 
-## Monorepo
-- apps/mobile — Expo React Native + TypeScript + Expo Router
+## Structure
+- apps/mobile — React Native + TypeScript + Expo Router
 - apps/api — Next.js server-side API
 - apps/admin — Next.js admin
 - packages/types — shared contracts
@@ -15,3 +15,5 @@ Google authentication is handled by the backend OAuth flow; Supabase service-rol
 
 ## Setup
 See docs/ARCHITECTURE.md and docs/DEPLOYMENT.md.
+
+<!-- Deployment synced with the new Supabase project. -->
