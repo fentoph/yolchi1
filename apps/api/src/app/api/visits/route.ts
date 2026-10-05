@@ -1,81 +1,49 @@
-import { NextResponse } from "next/server";
-import { serverDb } from "../../../lib/auth";
+import {createClient} from "@supabase/supabase-js";
+import {NextResponse} from "next/server";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
+export const runtime="nodejs";
+export const dynamic="force-dynamic";
 
-const COOKIE_NAME = "yolchi_visitor";
+const COOKIE_NAME="yolchi_visitor";
 
-function toVisitCount(value: unknown): number | null {
-  if (typeof value === "number" && Number.isFinite(value)) return value;
-  if (typeof value === "string" && /^\d+$/.test(value)) return Number(value);
+function toVisitCount(value:unknown):number|null{
+  if(typeof value==="number"&&Number.isFinite(value))return value;
+  if(typeof value==="string"&&/^\d+$/.test(value))return Number(value);
   return null;
 }
 
-export async function GET(req: Request) {
-  const hasVisitor = req.headers.get("cookie")?.includes(`${COOKIE_NAME}=`);
+function visitsDb(){
+  const url=process.env.SUPABASE_URL;
+  const key=process.env.SUPABASE_PUBLISHABLE_KEY||process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if(!url||!key)throw new Error("VISITS_DATABASE_CONFIGURATION_MISSING");
+  return createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}});
+}
 
-  try {
-    const db = serverDb();
+export async function GET(req:Request){
+  const hasVisitor=req.headers.get("cookie")?.includes(`${COOKIE_NAME}=`);
 
-    if (!hasVisitor) {
-      const { data, error } = await db.rpc("increment_site_visits");
+  try{
+    const db=visitsDb();
 
-      if (error) {
-        console.error("[visits] increment_site_visits failed", {
-          code: error.code,
-          message: error.message,
-          details: error.details,
-          hint: error.hint,
-        });
-      }
+    if(!hasVisitor){
+      const {data,error}=await db.rpc("increment_site_visits");
+      if(error)console.error("[visits] increment_site_visits failed",{code:error.code,message:error.message,details:error.details,hint:error.hint});
+      const visits=toVisitCount(data);
 
-      const visits = toVisitCount(data);
-
-      if (!error && visits !== null) {
-        const response = NextResponse.json(
-          { visits },
-          { headers: { "cache-control": "no-store, max-age=0" } }
-        );
-
-        response.cookies.set(COOKIE_NAME, "1", {
-          httpOnly: true,
-          sameSite: "lax",
-          secure: process.env.NODE_ENV === "production",
-          maxAge: 60 * 60 * 24 * 365,
-          path: "/",
-        });
-
+      if(!error&&visits!==null){
+        const response=NextResponse.json({visits},{headers:{"cache-control":"no-store, max-age=0"}});
+        response.cookies.set(COOKIE_NAME,"1",{httpOnly:true,sameSite:"lax",secure:process.env.NODE_ENV==="production",maxAge:60*60*24*365,path:"/"});
         return response;
       }
     }
 
-    const { data, error } = await db
-      .from("site_stats")
-      .select("visits")
-      .eq("key", "landing")
-      .maybeSingle();
+    const {data,error}=await db.from("site_stats").select("visits").eq("key","landing").maybeSingle();
+    if(error)console.error("[visits] site_stats read failed",{code:error.code,message:error.message,details:error.details,hint:error.hint});
+    const visits=error?null:toVisitCount(data?.visits);
 
-    if (error) {
-      console.error("[visits] site_stats read failed", {
-        code: error.code,
-        message: error.message,
-        details: error.details,
-        hint: error.hint,
-      });
-    }
-
-    const visits = error ? null : toVisitCount(data?.visits);
-
-    return NextResponse.json(
-      { visits: visits ?? 0 },
-      { headers: { "cache-control": "no-store, max-age=0" } }
-    );
-  } catch (error) {
-    console.error("[visits] unexpected error", error);
-    return NextResponse.json(
-      { visits: 0 },
-      { headers: { "cache-control": "no-store, max-age=0" } }
-    );
+    return NextResponse.json({visits:visits??0},{headers:{"cache-control":"no-store, max-age=0"}});
+  }catch(error){
+    console.error("[visits] unexpected error",error);
+    return NextResponse.json({visits:0},{headers:{"cache-control":"no-store, max-age=0"}});
   }
 }
